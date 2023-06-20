@@ -12,6 +12,7 @@ When('Type Username and Password',()=>{
 
 When('Click on Sign in button',()=>{
     cy.get('#okta-signin-submit').click()
+   
 })
 
 Then('User should land on Docman dashboard page',()=>{
