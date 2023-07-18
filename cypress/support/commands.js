@@ -14,7 +14,9 @@
 //
 //
 // -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
+Cypress.Commands.add('customCommand' ,()=> { 
+   cy.get('[xmlns\\:xlink="http://www.w3.org/1999/xlink"]').eq(0).trigger('mouseover');
+ })
 //
 //
 // -- This is a dual command --
@@ -23,3 +25,6 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+
+  

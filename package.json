@@ -18,16 +18,18 @@
   },
   "homepage": "https://github.com/sanjaykoju9849/FHF_Cucumber#readme",
   "devDependencies": {
-   
-    "cypress": "^12.14.0"
+    "cypress": "^12.14.0",
+    "cypress-real-events": "^1.8.1",
+    "install": "^0.13.0",
+    "npm": "^9.8.0"
   },
   "dependencies": {
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
-    "@badeball/cypress-cucumber-preprocessor": "^17.2.1"
+    "@badeball/cypress-cucumber-preprocessor": "^17.2.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0"
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": [
-      "cypress/e2e/stepDefinitions/*.js"
+      "cypress/e2e/stepDefinition/*.js"
     ]
   }
 }
