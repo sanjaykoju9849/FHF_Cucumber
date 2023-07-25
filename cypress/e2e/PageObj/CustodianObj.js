@@ -21,6 +21,11 @@ class CustodianObj
         return cy.get('.search-text')
     }
 
+    getFirstLoan()
+    {
+        return cy.get('div.table-body-wrapper > div:nth-child(1) > div:nth-child(1)')
+    }
+
 } 
 export default  CustodianObj;
 

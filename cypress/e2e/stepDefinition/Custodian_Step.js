@@ -1,62 +1,57 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import LoginPageObj from "../../e2e/PageObj/LoginPageObj";
 import CustodianObj from "../../e2e/PageObj/CustodianObj";
-//import './commands';
 const loginObj = new LoginPageObj();
 const custodianObj = new CustodianObj();
 
 //Login Step Definations
-Given('Valid user logins',()=>{
+Given('Valid user logins', () => {
     cy.visit("https://dashboards.firsthelpfinancial.net");
     loginObj.getUserName().type("collectionsmanager");
     loginObj.getPassword().type("FirstHelp_St@g!ng400#@!")
     loginObj.getSignInButton().click()
 })
 
-When('Click on custodian dashboard icon',()=>{
+When('Click on custodian dashboard icon', () => {
     custodianObj.getCustodianDashboardMenu().click()
-    })
 
-Then('User should land on Custodian dashboard page',()=>{
+})
+
+Then('User should land on Custodian dashboard page', () => {
     cy.url().should('include', '/custodian')
 })
 
 //Custodian dashboard Step Definations
-Given('User visits Custodian dashboard',()=>{
+Given('User visits Custodian dashboard', () => {
+    cy.intercept('GET', 'https://restinternal.firsthelpfinancial.net/ordswrapper?https://apisdev.firsthelpfinancial.com/ords/firsthelp_coll/custodian/custodian_exception_queue_tracker?limit=35').as('getAPI');
     custodianObj.getCustodianDashboardMenu().click()
+    cy.wait('@getAPI', { timeout: 15000 }).its('response.statusCode').should('eq', 200);
 })
 
-When('Hover to first loan number',()=>{
-    // cy.customCommand()
-    // cy.customCommand().focused().dblclick() 
-    custodianObj.mouseHover().realHover('mouse')
-    })
+When('Hover to first loan number and perform double click action', () => {
+    custodianObj.mouseHover().realHover('mouse').dblclick()
 
-When('Double click on the first loan number',()=>{
-    custodianObj.mouseHover().then(($ele)=>{
+})
+
+
+When('Paste copied loan number in Search', () => {
+    custodianObj.mouseHover().then(() => {
         custodianObj.getSearchIcon().click();
-        custodianObj.getSearchField()
-
-        
-    
-        const pasteEvent = new ClipboardEvent('paste', {
-            clipboardData: {
-              getData: () => "test",
-            },
-          });
-        
-          // Trigger the paste event on the input field
-          $ele[0].dispatchEvent(pasteEvent);
-        //   .type('{ctrl}', { release: false }) // Press Ctrl key
-        //   .type('v') // Press V key
-        //   .type('{ctrl}', { release: true });
+        custodianObj.getSearchField().then(($textField) => {
+            cy.window().then((win) => {
+                return win.navigator.clipboard.readText();
+            }).then((copiedText) => {
+                cy.wrap($textField).type(copiedText);
+                cy.writeFile('cypress/fixtures/FHF_Loan_Number.json', { loanNumber: copiedText })
+            });
+        });
+        custodianObj.getSearchField().type('{enter}')
     })
-    })
+})
 
-// Then('Verify the copied loan number from double click to paste in search bar',()=>{
-//     custodianObj.getSearchBar().click().then(()=>{
-//         custodianObj.getSearchField() .invoke('val', 'Pasted text goes here')
-//         .trigger('paste', { clipboardData: { getData: () => 'Pasted text goes here' } });
-//     })
-// })
+Then('Verify copied text', () => {
+        cy.fixture('FHF_Loan_Number.json').then((data) => {
+            custodianObj.getFirstLoan().should('contain', data.loanNumber)
+    })
+})
 

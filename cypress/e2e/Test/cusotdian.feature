@@ -8,6 +8,6 @@ Feature: Go to Custodian dashboard and Perform hover.
     Scenario: User to hover over first loan number
         Given Valid user logins
         Given User visits Custodian dashboard
-        When Hover to first loan number
-        When Double click on the first loan number
-       
+        When Hover to first loan number and perform double click action
+        When Paste copied loan number in Search
+        Then Verify copied text
