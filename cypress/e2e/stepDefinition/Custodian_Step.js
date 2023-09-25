@@ -7,8 +7,8 @@ const custodianObj = new CustodianObj();
 //Login Step Definations
 Given('Valid user logins', () => {
     cy.visit("https://dashboards.firsthelpfinancial.net");
-    loginObj.getUserName().type("collectionsmanager");
-    loginObj.getPassword().type("FirstHelp_St@g!ng400#@!")
+    loginObj.getUserName().type("");
+    loginObj.getPassword().type("")
     loginObj.getSignInButton().click()
 })
 
